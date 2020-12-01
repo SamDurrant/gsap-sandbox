@@ -1,25 +1,77 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef } from 'react'
+import './App.scss'
+import Header from './components/Header'
+import { Image } from './components/Image'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { textIntro, skewGallery } from './components/Animate'
+import HoverMenu from './components/HoverMenu'
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <div className="App">
+        <Header />
+        <div className="container">
+          <div className="wrapper">
+            <div className="home">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/about-us" component={About} />
+                <Route exact path="/contact-us" component={Contact} />
+                <Route exact path="/gallery" component={Gallery} />
+              </Switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Router>
+  )
 }
 
-export default App;
+function About() {
+  return (
+    <div>
+      <div>
+        <p>We have a decade years experience of worldclass services</p>
+      </div>
+      <HoverMenu />
+    </div>
+  )
+}
+
+function Contact() {
+  return <p>Feel free to reach us.</p>
+}
+function Gallery() {
+  let skewImage = useRef(null)
+  useEffect(() => {
+    skewGallery(skewImage)
+  }, [])
+  return (
+    <div ref={(el) => (skewImage = el)}>
+      <Image />
+    </div>
+  )
+}
+
+function Home() {
+  //Create a variable for our dom nodes
+  let intro = useRef(null)
+
+  useEffect(() => {
+    //animate text
+    textIntro(intro)
+  }, [])
+  return (
+    <div className="container">
+      <div className="wrapper">
+        <div className="hero__img"></div>
+        <h5 className="intro" ref={(el) => (intro = el)}>
+          <b>SHOPPER</b>, is a worldclass, innovative, global online ecommerce
+          platform, that meets your everyday daily needs.
+        </h5>
+      </div>
+    </div>
+  )
+}
+export default App
